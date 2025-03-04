@@ -1,20 +1,41 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
+parameters:
+  - name: repoUrl
+    type: string
+    default: 'https://github.com/QoT-Solutions/safeSpeed_BackEnd.git'
+  - name: dockerUser
+    type: string
+    default: 'kopanomgn'
+  - name: dockerPass
+    type: string
+    default: 'KopanoMagano@97'
+  - name: dockerImage
+    type: string
+    default: 'testExec'
+  - name: dockerTag
+    type: string
+    default: '1'
 
 trigger:
-- main
+  branches:
+    include:
+      - main
+
+pr:
+  branches:
+    include:
+      - main
 
 pool:
   vmImage: ubuntu-latest
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
-
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
-
+stages:
+  - stage: DockerRun
+    displayName: 'Install Docker and Run Container'
+    jobs:
+      - job: DockerJob
+        steps:
+          - script: |
+              echo "Running in Docker"
+              docker login --username ${{ parameters.dockerUser }} --password ${{ parameters.dockerPass }}
+              docker run -d -p 3000:3000 ${{ parameters.dockerUser }}/${{ parameters.dockerImage }}:${{ parameters.dockerTag }}
+            displayName: 'Running Docker Container'

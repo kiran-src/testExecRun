@@ -10,7 +10,7 @@ parameters:
     default: 'KopanoMagano@97'
   - name: dockerImage
     type: string
-    default: 'testExec'
+    default: 'testexec'
   - name: dockerTag
     type: string
     default: '1'

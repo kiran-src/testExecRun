@@ -6,6 +6,9 @@ parameters:
     type: string
     default: '1'
 
+variables:
+  - group: 'Secrets'
+
 trigger:
   branches:
     include:
@@ -27,6 +30,6 @@ stages:
         steps:
           - script: |
               echo "Running in Docker"
-              echo $(docker_password) | docker login --username $(docker_user) --password-stdin
+              docker login --username ${{ variables.docker_user}} --password ${{ variables.docker_password}}
               docker run -d -p 3000:3000 $(docker_user)/$(dockerImage):$(dockerTag)
             displayName: 'Running Docker Container'

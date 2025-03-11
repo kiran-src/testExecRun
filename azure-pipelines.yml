@@ -30,6 +30,6 @@ stages:
         steps:
           - script: |
               echo "Running in Docker"
-              echo ${{ variables.docker_password}} | docker login --username ${{ variables.docker_user}} --password--password-stdin
-              docker run -d -p 3000:3000 $(docker_user)/$(dockerImage):$(dockerTag)
+              echo ${{ variables.docker_password }} | docker login --username ${{ variables.docker_user }} --password-stdin
+              docker run -d -p 3000:3000 ${{ variables.docker_user }}/${{ parameters.dockerImage }}:${{ parameters.dockerTag }}
             displayName: 'Running Docker Container'
